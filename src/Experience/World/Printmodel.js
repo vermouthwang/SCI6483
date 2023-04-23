@@ -10,12 +10,19 @@ export default class Printmodel
         this.resources = this.experience.resources
         
         this.sections = []
-        
-
+        this.printerType = "FDM"
+        this.printer = "Prusa MKS3"
+        this.material = 'PLA'
+        this.layerHeight = 1.0
+        this.printSpeed = {
+            'min': 5,
+            'max': 30,
+        }
     }
 
     addLine(line, smoothInterpolation = true){
        this.sections.push(line)
+       this.generateinterLayers(this.sections[-1], this.sections[-2], this.layerHeight, smoothInterpolation)
     }
 
     
