@@ -92,4 +92,5 @@ export default class Zboard
         // this.mesh.position.x +=0.01;
         console.log(this.mesh.position.x)
     }
+    
 }

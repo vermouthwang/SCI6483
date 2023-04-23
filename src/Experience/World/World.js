@@ -19,7 +19,8 @@ export default class World
         this.resources.on('ready', () =>
         {
             // Setup
-            this.zboard = new Floor()
+            this.floor = new Floor()
+            this.zboard = new Zboard()
             this.fox = new Fox()
             this.environment = new Environment()
         })

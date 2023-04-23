@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import Experience from '../Experience.js'
+// import EventEmitter from '/Users/macbook/Desktop/website/finalproject/SCI6483/src/Experience/Utils/EventEmitter.js'
 
 export default class Floor
 {
@@ -14,7 +15,6 @@ export default class Floor
         this.setMaterial()
         this.setMesh()
         this.update()
-
         
     }
 
@@ -59,7 +59,6 @@ export default class Floor
 
     update()
     {
-        
         this.mesh.position.x +=0.01
         console.log(this.mesh.position.x)
     }

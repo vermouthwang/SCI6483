@@ -1,5 +1,6 @@
 node_modules/.package-lock.json
 node_modules/.bin/esbuild
+<<<<<<< HEAD
 node_modules/.bin/esbuild.cmd
 node_modules/.bin/esbuild.ps1
 node_modules/.bin/nanoid
@@ -11,6 +12,11 @@ node_modules/.bin/rollup.ps1
 node_modules/.bin/vite
 node_modules/.bin/vite.cmd
 node_modules/.bin/vite.ps1
+=======
+node_modules/.bin/nanoid
+node_modules/.bin/rollup
+node_modules/.bin/vite
+>>>>>>> 917b43aece7f5b5b87bf86d74944d1829a22700b
 node_modules/.vite/deps/_metadata.json
 node_modules/.vite/deps/chunk-YWEOQFMY.js
 node_modules/.vite/deps/chunk-YWEOQFMY.js.map
@@ -23,8 +29,14 @@ node_modules/.vite/deps/three_examples_jsm_loaders_GLTFLoader__js.js
 node_modules/.vite/deps/three_examples_jsm_loaders_GLTFLoader__js.js.map
 node_modules/.vite/deps/three.js
 node_modules/.vite/deps/three.js.map
+<<<<<<< HEAD
 node_modules/@esbuild/win32-x64/package.json
 node_modules/@esbuild/win32-x64/README.md
+=======
+node_modules/@esbuild/darwin-x64/package.json
+node_modules/@esbuild/darwin-x64/README.md
+node_modules/@esbuild/darwin-x64/bin/esbuild
+>>>>>>> 917b43aece7f5b5b87bf86d74944d1829a22700b
 node_modules/esbuild/install.js
 node_modules/esbuild/LICENSE.md
 node_modules/esbuild/package.json
@@ -32,6 +44,15 @@ node_modules/esbuild/README.md
 node_modules/esbuild/bin/esbuild
 node_modules/esbuild/lib/main.d.ts
 node_modules/esbuild/lib/main.js
+<<<<<<< HEAD
+=======
+node_modules/fsevents/fsevents.d.ts
+node_modules/fsevents/fsevents.js
+node_modules/fsevents/fsevents.node
+node_modules/fsevents/LICENSE
+node_modules/fsevents/package.json
+node_modules/fsevents/README.md
+>>>>>>> 917b43aece7f5b5b87bf86d74944d1829a22700b
 node_modules/lil-gui/LICENSE.md
 node_modules/lil-gui/package.json
 node_modules/lil-gui/README.md
