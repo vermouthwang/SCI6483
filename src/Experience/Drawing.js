@@ -75,6 +75,7 @@ export default class Drawing
         this.raycaster.setFromCamera(this.mouse,this.camera.instance)
         this.intersects = this.raycaster.intersectObject(this.zboard.mesh)
         // console.log(this.intersects)
+        console.log("change")
     }
 
     update()
