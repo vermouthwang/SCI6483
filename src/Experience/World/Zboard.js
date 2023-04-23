@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import Experience from '../Experience.js'
 
-export default class Floor
+export default class Zboard
 {
     constructor()
     {
@@ -15,7 +15,6 @@ export default class Floor
         this.setMesh()
         this.update()
 
-        
     }
 
     setGeometry()
@@ -57,9 +56,14 @@ export default class Floor
         this.scene.add(this.mesh)
     }
 
+    // keyevent()
+    // {
+    //     if(keyevnt)
+    //         this.update()
+    // }
+
     update()
-    {
-        
+    {   
         this.mesh.position.x +=0.01
         console.log(this.mesh.position.x)
     }

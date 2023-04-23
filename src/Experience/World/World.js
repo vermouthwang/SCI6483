@@ -2,6 +2,10 @@ import Experience from '../Experience.js'
 import Environment from './Environment.js'
 import Floor from './Floor.js'
 import Fox from './Fox.js'
+import Zboard from './Zboard.js'
+import Point from './Point.js'
+import Line from './Line.js'
+import Printmodel from './Printmodel.js'
 
 export default class World
 {
@@ -15,7 +19,7 @@ export default class World
         this.resources.on('ready', () =>
         {
             // Setup
-            this.floor = new Floor()
+            this.zboard = new Floor()
             this.fox = new Fox()
             this.environment = new Environment()
         })
@@ -25,5 +29,8 @@ export default class World
     {
         if(this.fox)
             this.fox.update()
+            // console.log(this.floor.update())
+        // if(this.floor)
+        //     this.floor.update()
     }
 }
