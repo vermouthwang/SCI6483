@@ -10,11 +10,7 @@ export default class Printmodel
         this.resources = this.experience.resources
         
         this.sections = []
-        // this.setGeometry()
-        // this.setTextures()
-        // this.setMaterial()
-        // this.setMesh()
-        // this.update()
+        
 
     }
 
