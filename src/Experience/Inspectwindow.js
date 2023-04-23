@@ -15,7 +15,7 @@ export default class Inspectwindow
     }
 
     setWindow(){
-        console.log("GUI")
+        this.window = this.ui.addFolder('window')
     }
 
 }
