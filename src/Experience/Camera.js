@@ -36,7 +36,6 @@ export default class Camera
         this.controls.enableDamping = true
         this.controls.enabled = true
 
-        console.log(this.debug)
         if(this.debug.active)
         {
             this.debugFolder.add(this.controls,'enabled',true).name('perspective')

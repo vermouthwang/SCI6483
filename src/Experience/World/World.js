@@ -6,6 +6,7 @@ import Zboard from './Zboard.js'
 import Point from './Point.js'
 import Line from './Line.js'
 import Printmodel from './Printmodel.js'
+import Drawing from '../Drawing.js'
 
 export default class World
 {
@@ -15,6 +16,7 @@ export default class World
         this.scene = this.experience.scene
         this.resources = this.experience.resources
 
+
         // Wait for resources
         this.resources.on('ready', () =>
         {
@@ -23,13 +25,23 @@ export default class World
             this.zboard = new Zboard()
             this.fox = new Fox()
             this.environment = new Environment()
+            this.drawing = new Drawing()
         })
+        
     }
 
     update()
     {
-        if(this.fox)
+
+        if(this.fox){
             this.fox.update()
+            // this.drawing.update()
+        }
+        if (this.drawing){
+            this.drawing.update()
+        }
+            
+            
             // console.log(this.floor.update())
         // if(this.floor)
         //     this.floor.update()
