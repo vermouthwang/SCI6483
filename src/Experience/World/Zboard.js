@@ -1,10 +1,12 @@
 import * as THREE from 'three'
 import Experience from '../Experience.js'
+import EventEmitter from '/Users/macbook/Desktop/website/finalproject/SCI6483/src/Experience/Utils/EventEmitter.js'
 
 export default class Zboard
 {
     constructor()
     {
+        
         this.experience = new Experience()
         this.scene = this.experience.scene
         this.resources = this.experience.resources
@@ -14,7 +16,21 @@ export default class Zboard
         this.setMaterial()
         this.setMesh()
         this.update()
+        console.log("move")
 
+        window.addEventListener('keypress', (event) =>
+        {
+            var name = event.key
+            if (name === 's'){
+                console.log()
+                this.backward()
+            }
+            if (name === 'w'){
+                this.forward()
+            }
+
+        })
+        
     }
 
     setGeometry()
@@ -51,7 +67,9 @@ export default class Zboard
     {
         this.mesh = new THREE.Mesh(this.geometry, this.material)
         this.mesh.position.x = 0
-        this.mesh.rotation.x = - Math.PI * 0.5
+        this.mesh.position.z = -10
+
+        // this.mesh.rotation.x = - Math.PI * 0.5
         this.mesh.receiveShadow = true
         this.scene.add(this.mesh)
     }
@@ -61,10 +79,17 @@ export default class Zboard
     //     if(keyevnt)
     //         this.update()
     // }
-
+    forward()
+    {
+        this.mesh.position.z -= 1
+    }
+    backward()
+    {
+        this.mesh.position.z += 1
+    }
     update()
     {   
-        this.mesh.position.x +=0.01
+        // this.mesh.position.x +=0.01;
         console.log(this.mesh.position.x)
     }
 }
