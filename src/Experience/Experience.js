@@ -10,6 +10,7 @@ import Resources from './Utils/Resources.js'
 import sources from './sources.js'
 import Drawing from './Drawing.js'
 // import Inspectwindow from './Inspectwindow.js'
+import Inspectwindow from './Inspectwindow.js'
 
 let instance = null
 
@@ -39,6 +40,7 @@ export default class Experience
         this.camera = new Camera()
         this.renderer = new Renderer()
         this.world = new World()
+        this.inspectwindow = new Inspectwindow()
 
 
 

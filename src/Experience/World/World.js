@@ -15,6 +15,7 @@ export default class World
         this.experience = new Experience()
         this.scene = this.experience.scene
         this.resources = this.experience.resources
+        this.printmodel = new Printmodel()
 
 
         // Wait for resources
@@ -26,6 +27,7 @@ export default class World
             this.fox = new Fox()
             this.environment = new Environment()
             this.drawing = new Drawing()
+            
         })
         
     }
