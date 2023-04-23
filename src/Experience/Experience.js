@@ -38,6 +38,7 @@ export default class Experience
         this.camera = new Camera()
         this.renderer = new Renderer()
         this.world = new World()
+        this.inspectwindow = new Inspectwindow()
 
         // Resize event
         this.sizes.on('resize', () =>
