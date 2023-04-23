@@ -32,7 +32,10 @@ export default class Inspectwindow
         this.printParams.add(this.experience.world.printmodel.printSpeed, 'max')
                         .name('Max Speed')
                         .min(5).max(30).step(0.1)
-
+        //drawing parameters
+        this.printParams = this.ui.addFolder('DrawingSettings')
+        this.printParams.add(this.experience.camera.controls, 'enabled', 'draw')
     }
+
 
 }
