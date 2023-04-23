@@ -15,7 +15,7 @@ export default class Drawing
         this.debug = this.experience.debug
         this.camera = this.experience.camera
         this.zboard = this.experience.world.zboard
-        console.log(this.zboard)
+        
         
 
         this.paint = false
@@ -26,7 +26,7 @@ export default class Drawing
         this.setMouseUpDown()
         this.currentx = this.mouse.x
         this.currenty = this.mouse.y
-        this.objectTotest = 
+        this.getpoints
         this.update()
 
     }
@@ -70,22 +70,31 @@ export default class Drawing
 
     checkintersection()
     {
-        // console.log(this.camera.instance)
-        // console.log(this.zboard.mesh)
+
         this.raycaster.setFromCamera(this.mouse,this.camera.instance)
         this.intersects = this.raycaster.intersectObject(this.zboard.mesh)
-        // console.log(this.intersects)
-        console.log("change")
+  
+        if (this.intersects.length!=0 && this.intersects != undefined){
+            this.getpoints = this.intersects[0].point
+        }
+        else{
+            this.getpoints = undefined
+        }
+
     }
 
     update()
     {   
         // console.log(this.zboard)
         this.checkMouseChange()
-        if (this.paint && this.change & this.camera.controls.enabled == false){
+        if ((this.paint && this.change && this.camera.controls.enabled == false) ||
+            (this.paint && this.zboard.onchange && this.camera.controls.enabled == false)
+            ){
             this.checkintersection()
         }
         this.currentx = this.mouse.x
         this.currenty = this.mouse.y
+        
+       
     }
 }

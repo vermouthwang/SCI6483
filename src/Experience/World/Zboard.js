@@ -15,26 +15,35 @@ export default class Zboard
         this.setMaterial()
         this.setMesh()
         this.update()
-        console.log("move")
+        this.onchange = false
+ 
 
         window.addEventListener('keypress', (event) =>
         {
             var name = event.key
-            if (name === 's'){
-                console.log()
+            if (name === 's'){ 
                 this.backward()
+                this.onchange=true
             }
             if (name === 'w'){
                 this.forward()
+                this.onchange=true
             }
-
+        })
+        window.addEventListener('keyup',(event) =>
+        {    
+            var name = event.key
+            if (name === 's' || name === 'w'){ 
+                this.onchange=false
+            }
         })
         
     }
 
     setGeometry()
     {
-        this.geometry = new THREE.CircleGeometry(5, 64)
+        this.geometry = new THREE.PlaneGeometry(10, 10,10,10)
+
   
     }
 
@@ -56,9 +65,11 @@ export default class Zboard
 
     setMaterial()
     {
-        this.material = new THREE.MeshStandardMaterial({
-            map: this.textures.color,
-            normalMap: this.textures.normal
+        this.material = new THREE.MeshBasicMaterial({
+            side: THREE.DoubleSide,
+            transparent: true,
+            opacity:0.2,
+            color: new THREE.Color('#ff00ff')
         })
     }
 
@@ -66,30 +77,24 @@ export default class Zboard
     {
         this.mesh = new THREE.Mesh(this.geometry, this.material)
         this.mesh.position.x = 0
-        this.mesh.position.z = -10
+        this.mesh.position.z = -5
+        this.mesh.position.y = 5
 
         // this.mesh.rotation.x = - Math.PI * 0.5
         this.mesh.receiveShadow = true
         this.scene.add(this.mesh)
     }
 
-    // keyevent()
-    // {
-    //     if(keyevnt)
-    //         this.update()
-    // }
     forward()
     {
-        this.mesh.position.z -= 1
+        this.mesh.position.z -= 0.08
     }
     backward()
     {
-        this.mesh.position.z += 1
+        this.mesh.position.z += 0.08
     }
     update()
     {   
-        // this.mesh.position.x +=0.01;
-        console.log(this.mesh.position.x)
     }
     
 }

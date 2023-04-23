@@ -27,6 +27,7 @@ export default class World
             this.fox = new Fox()
             this.environment = new Environment()
             this.drawing = new Drawing()
+            this.point = new Point()
             
         })
         
@@ -35,6 +36,7 @@ export default class World
     update()
     {
 
+
         if(this.fox){
             this.fox.update()
             // this.drawing.update()
@@ -42,7 +44,10 @@ export default class World
         if (this.drawing){
             this.drawing.update()
         }
-            
+        if (this.point){
+        
+            this.point.update()
+        }    
             
             // console.log(this.floor.update())
         // if(this.floor)

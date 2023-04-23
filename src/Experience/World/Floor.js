@@ -20,7 +20,7 @@ export default class Floor
 
     setGeometry()
     {
-        this.geometry = new THREE.CircleGeometry(5, 64)
+        this.geometry = new THREE.PlaneGeometry(10, 10,10,10)
   
     }
 
@@ -42,10 +42,14 @@ export default class Floor
 
     setMaterial()
     {
-        this.material = new THREE.MeshStandardMaterial({
-            map: this.textures.color,
-            normalMap: this.textures.normal
+        this.material = new THREE.MeshBasicMaterial({
+            side: THREE.DoubleSide,
+            transparent: true,
+            wireframe :true,
+            color: new THREE.Color('#ff00ff'),
+            opacity: 0.5
         })
+        // this.material.opacity = 0.5
     }
 
     setMesh()
