@@ -31,7 +31,7 @@ export default class Printmodel
         this.color = 'orange'
     }
 
-    addLine(line, smoothInterpolation = true){
+    addLine(line){
        this.sections.push(line)
        if (this.sections.length == 1) {
             first_layer = this.generateFirstLayer(this.sections[0], this.layerHeight)
