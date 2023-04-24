@@ -24,15 +24,18 @@ export default class Inspectwindow
         this.printParams.add(this.experience.world.printmodel, 'material', ['PLA', 'ABS','CLAY'] )
                         .name('Material')
         this.printParams.add(this.experience.world.printmodel, 'layerHeight')
-                        .name('Layer Height')
-                        .min(0.5).max(1.5).step(0.1)
-        this.printParams.add(this.experience.world.printmodel.printSpeed, 'min')
-                        .name('Min Speed')
-                        .min(5).max(30).step(0.1)
-        this.printParams.add(this.experience.world.printmodel.printSpeed, 'max')
-                        .name('Max Speed')
-                        .min(5).max(30).step(0.1)
-
+                        .name('Layer Height(mm)')
+                        .min(this.experience.world.printmodel.limit["min_layer_height"])
+                        .max(this.experience.world.printmodel.limit["max_layer_height"])
+                        .step(0.1)
+        this.printParams.add(this.experience.world.printmodel, 'smoothInterpolation', ['True', 'False'])
+                        .name('Smooth Interpolation')
+        this.printParams.add(this.experience.world.printmodel, 'exportGcode')
+                        .name('Export Gcode')
+        // display settings
+        this.displayParams = this.ui.addFolder('DisplaySettings')
+        this.displayParams.add(this.experience.world.printmodel, 'color', ['orange', 'blue', 'green', 'red'])
+                          .name('Model Color')
     }
 
 }
