@@ -46,7 +46,6 @@ export default class Zboard
 
   
     }
-
     setTextures()
     {
         this.textures = {}
@@ -69,8 +68,9 @@ export default class Zboard
             side: THREE.DoubleSide,
             transparent: true,
             opacity:0.2,
-            color: new THREE.Color('#ff00ff')
+            color: new THREE.Color('#887020')
         })
+
     }
 
     setMesh()

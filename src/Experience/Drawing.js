@@ -49,6 +49,7 @@ export default class Drawing
         })
         window.addEventListener( 'pointerup', ()=>{
             this.paint = false
+            this.getpoints = undefined
         })
     }
 
@@ -85,7 +86,7 @@ export default class Drawing
 
     update()
     {   
-        // console.log(this.zboard)
+
         this.checkMouseChange()
         if ((this.paint && this.change && this.camera.controls.enabled == false) ||
             (this.paint && this.zboard.onchange && this.camera.controls.enabled == false)
