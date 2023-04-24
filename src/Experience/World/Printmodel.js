@@ -22,7 +22,7 @@ export default class Printmodel
             'max': 30,
         }
         this.maxSlope = printers[this.printer]["machine_max_z_slope"] + 10
-        this.smoothInterpolation = true
+        this.smoothInterpolation = false
         this.exportGcode = () => {
             exportPrtintPath(this.printpath)
         }
@@ -42,24 +42,24 @@ export default class Printmodel
             this.display(first_layer, true)
         }
         else {
-        let last_section = this.sections[this.sections.length - 1]
-        let second_last_section = this.sections[this.sections.length - 2]
-        let smoothInterpolation 
-        // first two layers can only be linearly interpolated
-        if (this.sections.length == 2) { smoothInterpolation = false } 
-        else { smoothInterpolation = this.smoothInterpolation}
-        // check if the last two layers can be interpolated
-        let is_interpolatable = this.isInterpolatable(last_section, second_last_section)[0]
-        let layersNum = this.isInterpolatable(last_section, second_last_section)[1]
-        console.log(is_interpolatable, layersNum)
-        if (is_interpolatable) {
-            let inter_layers = this.generateInterLayers(last_section, second_last_section, layersNum, smoothInterpolation)
-            this.display(inter_layers, false)
-            console.log(inter_layers)
-        }else{
-            console.log("The last two layers can not be interpolated.")
-            this.sections.pop()
-            }
+            let last_section = this.sections[this.sections.length - 1]
+            let second_last_section = this.sections[this.sections.length - 2]
+            let smoothInterpolation 
+            // first two layers can only be linearly interpolated
+            if (this.sections.length == 2) { smoothInterpolation = false } 
+            else { smoothInterpolation = this.smoothInterpolation}
+            // check if the last two layers can be interpolated
+            let is_interpolatable = this.isInterpolatable(last_section, second_last_section)[0]
+            let layersNum = this.isInterpolatable(last_section, second_last_section)[1]
+            console.log(is_interpolatable, layersNum)
+            if (is_interpolatable) {
+                let inter_layers = this.generateInterLayers(last_section, second_last_section, layersNum, smoothInterpolation)
+                this.display(inter_layers, false)
+                console.log(inter_layers)
+            }else{
+                console.log("The last two layers can not be interpolated.")
+                this.sections.pop()
+                }
        }
     }
     
@@ -117,16 +117,16 @@ export default class Printmodel
         }
         const inter_layers_num_by_closestDis = Math.floor(closestDis*this.unit['mm'] / this.limit["min_layer_height"])
         const layer_height_max_by_closestDis = furthestDis*this.unit['mm'] / inter_layers_num_by_closestDis
-        console.log("inter_layers_num_by_closestDis", inter_layers_num_by_closestDis)
-        console.log("layer_height_max_by_closestDis", layer_height_max_by_closestDis)
+        // console.log("inter_layers_num_by_closestDis", inter_layers_num_by_closestDis)
+        // console.log("layer_height_max_by_closestDis", layer_height_max_by_closestDis)
         if (layer_height_max_by_closestDis > this.limit["max_layer_height"]) {
             console.log("The last two layers can not be interpolated by the shortest closest distance.")
             return result
         }
         const inter_layers_num_by_furthestDis = Math.ceil(furthestDis*this.unit['mm'] / this.limit["max_layer_height"])
         const layer_height_min_by_furthestDis = closestDis*this.unit['mm'] / inter_layers_num_by_furthestDis
-        console.log("inter_layers_num_by_furthestDis", inter_layers_num_by_furthestDis)
-        console.log("layer_height_min_by_furthestDis", layer_height_min_by_furthestDis)
+        // console.log("inter_layers_num_by_furthestDis", inter_layers_num_by_furthestDis)
+        // console.log("layer_height_min_by_furthestDis", layer_height_min_by_furthestDis)
         if (layer_height_min_by_furthestDis < this.limit["min_layer_height"]) {
             console.log("The last two layers can not be interpolated by the furthest closest distance.")
             return result
@@ -172,7 +172,7 @@ export default class Printmodel
          * returns: (array): a set of interpolated layers.
          */
         const interLayersPoints = [];
-        console.log("interLayersNum: " + interLayersNum)
+        // console.log("interLayersNum: " + interLayersNum)
         if (smoothInterpolation) {
             // smooth interpolation
             
@@ -204,7 +204,8 @@ export default class Printmodel
         const new_layers = []
         for (let i = 0; i < interLayersNum; i++) {
             const curve = new THREE.CatmullRomCurve3( interLayersPoints[i], true );
-            const points = curve.getPoints( 50 );
+            console.log('curve ' + i + ' generated', curve)
+            let points = curve.getPoints( 50 );
             const geometry = new THREE.BufferGeometry().setFromPoints( points );
             const material = new THREE.LineBasicMaterial( { color : this.color } );
             const line = new THREE.Line( geometry, material );
