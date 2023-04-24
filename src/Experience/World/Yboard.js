@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import Experience from '../Experience.js'
 
-export default class Zboard
+export default class Yboard
 {
     constructor()
     {
@@ -22,11 +22,11 @@ export default class Zboard
         {
             var name = event.key
             if (name === 's'){ 
-                this.backward()
+                this.downward()
                 this.onchange=true
             }
             if (name === 'w'){
-                this.forward()
+                this.upward()
                 this.onchange=true
             }
         })
@@ -36,8 +36,7 @@ export default class Zboard
             if (name === 's' || name === 'w'){ 
                 this.onchange=false
             }
-        })
-        
+        })        
     }
 
     setGeometry()
@@ -76,27 +75,29 @@ export default class Zboard
     setMesh()
     {
         this.mesh = new THREE.Mesh(this.geometry, this.material)
-        this.mesh.position.x = 0
-        this.mesh.position.z = -5
         this.mesh.position.y = 5
-        this.mesh.visible = true
-
-        // this.mesh.rotation.x = - Math.PI * 0.5
+        this.mesh.rotation.x = - Math.PI * 0.5
         this.mesh.receiveShadow = true
+        this.mesh.visible = false
         this.scene.add(this.mesh)
-    
     }
 
-    forward()
+    upward()
     {
-        this.mesh.position.z -= 0.08
+        this.mesh.position.y += 0.08
     }
-    backward()
+    downward()
     {
-        this.mesh.position.z += 0.08
+        this.mesh.position.y -= 0.08
     }
     update()
     {   
+        if (this.experience.world.zboard.mesh.visible == false){
+            this.mesh.visible = true
+        }
+        else{
+            this.mesh.visible = false
+        }
     }
     
 }

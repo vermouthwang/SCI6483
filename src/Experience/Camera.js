@@ -23,11 +23,11 @@ export default class Camera
     setInstance()
     {
         this.instance = new THREE.PerspectiveCamera(35, this.sizes.width / this.sizes.height, 0.1, 100)
-        this.instance.position.set(0,3,10)
+        this.instance.position.set(0,0,12)
         // TODO #1
-        // console.log(this.instance.lookAt)
-        // this.instance.lookAt((0,10,0))
+
         this.scene.add(this.instance)
+        
     }
 
     setControls()
@@ -35,8 +35,9 @@ export default class Camera
         this.controls = new OrbitControls(this.instance, this.canvas)
         this.controls.enableDamping = true
         this.controls.enabled = true
+        this.controls.object.position.set(0, 9, 19.5);
+        this.controls.target = new THREE.Vector3(0, 3.8, 0);
 
-        console.log(this.debug)
         if(this.debug.active)
         {
             this.debugFolder.add(this.controls,'enabled',true).name('perspective')

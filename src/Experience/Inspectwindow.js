@@ -13,6 +13,11 @@ export default class Inspectwindow
 
         this.setWindow()
     }
+    setadditionalwindow(){
+        if (this.experience.world.zboard != undefined){
+            this.printParams.add(this.experience.world.zboard.mesh, 'visible')
+                            .name("Zboard-Yboard")}
+        }
 
     setWindow(){
         // printing parameters
@@ -36,6 +41,11 @@ export default class Inspectwindow
         this.displayParams = this.ui.addFolder('DisplaySettings')
         this.displayParams.add(this.experience.world.printmodel, 'color', ['orange', 'blue', 'green', 'red'])
                           .name('Model Color')
+        //drawing parameters
+        this.printParams = this.ui.addFolder('DrawingSettings')
+        this.printParams.add(this.experience.camera.controls, 'enabled')
+                        .name("view")
     }
+
 
 }

@@ -8,6 +8,8 @@ import Renderer from './Renderer.js'
 import World from './World/World.js'
 import Resources from './Utils/Resources.js'
 import sources from './sources.js'
+import Drawing from './Drawing.js'
+// import Inspectwindow from './Inspectwindow.js'
 import Inspectwindow from './Inspectwindow.js'
 
 let instance = null
@@ -40,6 +42,8 @@ export default class Experience
         this.world = new World()
         this.inspectwindow = new Inspectwindow()
 
+
+
         // Resize event
         this.sizes.on('resize', () =>
         {
@@ -51,6 +55,8 @@ export default class Experience
         {
             this.update()
         })
+
+
     }
 
     resize()
@@ -65,39 +71,40 @@ export default class Experience
         this.world.update()
         this.renderer.update()
 
+
     }
 
     destroy()
     {
         this.sizes.off('resize')
         this.time.off('tick')
+       
+        // this.scene.traverse((child) =>
+        // {
+        //     // Test if it's a mesh
+        //     if(child isInstance THREE.Mesh)
+        //     {
+        //         // console.log(child)
+               
 
-        // Traverse the whole scene
-        this.scene.traverse((child) =>
-        {
-            // Test if it's a mesh
-            if(child instanceof THREE.Mesh)
-            {
-                child.geometry.dispose()
+        //         // Loop through the material properties
+        //         for(const key in child.material)
+        //         {
+        //             const value = child.material[key]
 
-                // Loop through the material properties
-                for(const key in child.material)
-                {
-                    const value = child.material[key]
-
-                    // Test if there is a dispose function
-                    if(value && typeof value.dispose === 'function')
-                    {
-                        value.dispose()
-                    }
-                }
-            }
-        })
+        //             // Test if there is a dispose function
+        //             if(value && typeof value.dispose === 'function')
+        //             {
+        //                 value.dispose()
+        //             }
+        //         }
+        //     }
+        // })
 
         this.camera.controls.dispose()
         this.renderer.instance.dispose()
 
-        if(this.debug.active)
-            this.debug.ui.destroy()
+        // if(this.debug.active)
+        //     this.debug.ui.destroy()
     }
 }
