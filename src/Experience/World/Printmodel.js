@@ -14,6 +14,7 @@ export default class Printmodel
         this.printerType = "FDM"
         this.printer = "Prusa MKS3"
         this.limit = printers[this.printer]
+        this.unit = {'mm': 10, 'cm': 1, 'm': 0.01}
         this.material = 'PLA'
         this.layerHeight = 1.0
         this.printSpeed = {
@@ -21,7 +22,7 @@ export default class Printmodel
             'max': 30,
         }
         this.maxSlope = printers[this.printer]["machine_max_z_slope"] + 10
-        this.smoothInterpolation = true
+        this.smoothInterpolation = false
         this.exportGcode = () => {
             exportPrtintPath(this.printpath)
         }
@@ -29,33 +30,36 @@ export default class Printmodel
         this.sections = []
         this.printpath = []
         this.color = 'orange'
+        this.clear = () => {
+            this.clearPrintPath()
+        }
     }
 
-    addLine(line, smoothInterpolation = true){
-        console.log(line)
-       this.sections.push(line)
-       console.log(this.sections)
-       if (this.sections.length == 1) {
-            first_layer = this.generateFirstLayer(this.sections[0], this.layerHeight)
-            this.display(first_layer, single_layer = true)
-       }
-       else {
-        const last_section = this.sections[this.sections.length - 1]
-        const second_last_section = this.sections[this.sections.length - 2]
-        const smoothInterpolation = null
-        // first two layers can only be linearly interpolated
-        if (this.sections.length == 2) { smoothInterpolation = false } 
-        else { smoothInterpolation = this.smoothInterpolation}
-        // check if the last two layers can be interpolated
-        is_interpolatable, layersNum = this.isInterpolatable(last_section, second_last_section)
-        if (is_interpolatable) {
-            inter_layers = this.generateInterLayers(last_section, second_last_section, layersNum, smoothInterpolation)
-            this.display(inter_layers, single_layer = false)
-            this.display(last_section, single_layer = true)
-        }else{
-            console.log("The last two layers can not be interpolated.")
-            this.sections.pop()
-            }
+    addSection(section){
+        this.sections.push(section)
+        if (this.sections.length == 1) {
+            const first_layer = this.generateFirstLayer(this.sections[0])
+            this.display(first_layer, true)
+        }
+        else {
+            let last_section = this.sections[this.sections.length - 1]
+            let second_last_section = this.sections[this.sections.length - 2]
+            let smoothInterpolation 
+            // first two layers can only be linearly interpolated
+            if (this.sections.length == 2) { smoothInterpolation = false } 
+            else { smoothInterpolation = this.smoothInterpolation}
+            // check if the last two layers can be interpolated
+            let is_interpolatable = this.isInterpolatable(last_section, second_last_section)[0]
+            let layersNum = this.isInterpolatable(last_section, second_last_section)[1]
+            console.log(is_interpolatable, layersNum)
+            if (is_interpolatable) {
+                let inter_layers = this.generateInterLayers(last_section, second_last_section, layersNum, smoothInterpolation)
+                this.display(inter_layers, false)
+                console.log(inter_layers)
+            }else{
+                console.log("The last two layers can not be interpolated.")
+                this.sections.pop()
+                }
        }
     }
     
@@ -71,24 +75,25 @@ export default class Printmodel
          *  int: the number of layers between the last two layers.
             */
         // check the two layers are all closed curves or all open curves
-        if (layer.closed != layer2.closed) {
+        const result = [false, 0]
+        if (layer1.closed != layer2.closed) {
             console.log("The last two layers are not all closed curves or all open curves.")
-            return false
+            return result
         }
         // check the last section's slope is not too steep
         layer1.segments.forEach(segment1 => {
-            const run = MATH.sqrt((segment1.end.x - segment1.start.x)**2 + (segment1.end.z - segment1.start.z)**2)
+            const run = Math.sqrt((segment1.end.x - segment1.start.x)**2 + (segment1.end.z - segment1.start.z)**2)
             const slope = (segment1.end.y - segment1.start.y) / run
             const angle = Math.atan(slope) * 180 / Math.PI
             if (angle > this.maxSlope) {
                 console.log("The last section's slope is too steep.")
-                return (false, null)
+                return result
             }})
 
-        closestDis = 0
-        furthestDis = null
+        let closestDis = null
+        let furthestDis = null
         for(let i = 0; i < layer1.points.length; i++){
-            point1 = layer1.points[i]
+            let point1 = layer1.points[i]
             if (i < layer1.points.length - 1) {
             }
             // check the two layers don't intersect vertically
@@ -96,36 +101,45 @@ export default class Printmodel
                 if (point2.x - 1 <= point1.x <= point2.x + 1 && point2.z - 1 <= point1.z <= point2.z + 1){
                     if (point1.y <= point2.y) {
                         console.log("The last two layers intersect vertically.")
-                        return (false, null)
+                        return result
                     }
                 }
             })
             // calculate the shortest/furthest closest distance between the two layers
             layer2.segments.forEach(segment2 => {
-                const distance = segment2.closestPointToPoint(point1, true).distanceTo(point1)
-                if (distance < closestDis) { closestDis = distance }
+                let closetPoint = new THREE.Vector3()
+                segment2.closestPointToPoint(point1, true, closetPoint)
+                const distance = closetPoint.distanceTo(point1)
+                if (closestDis == null || distance < closestDis) { closestDis = distance }
             })
             if (furthestDis == null || closestDis > furthestDis)
                { furthestDis = closestDis }
         }
-        inter_layers_num_by_closestDis = MATH.floor(closestDis / this.limit["min_layer_height"])
-        layer_height_max_by_closestDis = furthestDis / inter_layers_num_by_closestDis
+        const inter_layers_num_by_closestDis = Math.floor(closestDis*this.unit['mm'] / this.limit["min_layer_height"])
+        const layer_height_max_by_closestDis = furthestDis*this.unit['mm'] / inter_layers_num_by_closestDis
+        // console.log("inter_layers_num_by_closestDis", inter_layers_num_by_closestDis)
+        // console.log("layer_height_max_by_closestDis", layer_height_max_by_closestDis)
         if (layer_height_max_by_closestDis > this.limit["max_layer_height"]) {
             console.log("The last two layers can not be interpolated by the shortest closest distance.")
-            return (false, null)
+            return result
         }
-        inter_layers_num_by_furthestDis = MATH.ceil(furthestDis / this.limit["max_layer_height"])
-        layer_height_min_by_furthestDis = closestDis / inter_layers_num_by_furthestDis
+        const inter_layers_num_by_furthestDis = Math.ceil(furthestDis*this.unit['mm'] / this.limit["max_layer_height"])
+        const layer_height_min_by_furthestDis = closestDis*this.unit['mm'] / inter_layers_num_by_furthestDis
+        // console.log("inter_layers_num_by_furthestDis", inter_layers_num_by_furthestDis)
+        // console.log("layer_height_min_by_furthestDis", layer_height_min_by_furthestDis)
         if (layer_height_min_by_furthestDis < this.limit["min_layer_height"]) {
             console.log("The last two layers can not be interpolated by the furthest closest distance.")
-            return (false, null)
+            return result
         }
         // calculate the number of layers between the last two layers
-        inter_layers_num = MATH.floor((furthestDis - closestDis) / this.layerHeight)
-        return (true, inter_layers_num)
+        const k = (this.layerHeight - this.limit["min_layer_height"]) / (this.limit["max_layer_height"] - this.limit["min_layer_height"])
+        const inter_layers_num = Math.floor((inter_layers_num_by_closestDis - inter_layers_num_by_furthestDis)*k + inter_layers_num_by_furthestDis)
+        result[0] = true
+        result[1] = inter_layers_num
+        return result
     }
 
-    generateFirstLayer(layer, layerHeight) {
+    generateFirstLayer(layer) {
         /**
          * Generate the first layer.
          * args:
@@ -136,17 +150,17 @@ export default class Printmodel
          * */
         const firstLayerPoints = [];
         layer.points.forEach(point => {
-            const newPoint = new THREE.Vector3(point.x, this.limit["min_layer_height"], point.z);
+            const newPoint = new THREE.Vector3(point.x, this.limit["min_layer_height"]/this.unit['mm'], point.z);
             firstLayerPoints.push(newPoint);
         })
         const geometry = new THREE.BufferGeometry().setFromPoints(firstLayerPoints);
         const material = new THREE.LineBasicMaterial({ color : this.color });
         const firstLayer = new THREE.Line(geometry, material);
-        this.printpath.push(first_layer)
+        this.printpath.push(firstLayer)
         return firstLayer;
     }
 
-    generateInterLayers(layer1, layer2, interLayersNum, smoothInterpolation = true) {
+    generateInterLayers(layer1, layer2, interLayersNum, smoothInterpolation) {
         /**
          * Interpolate between the last two layers.
          * args: 
@@ -158,6 +172,7 @@ export default class Printmodel
          * returns: (array): a set of interpolated layers.
          */
         const interLayersPoints = [];
+        // console.log("interLayersNum: " + interLayersNum)
         if (smoothInterpolation) {
             // smooth interpolation
             
@@ -186,10 +201,11 @@ export default class Printmodel
                 }
             }
         }
-        new_layers = []
+        const new_layers = []
         for (let i = 0; i < interLayersNum; i++) {
             const curve = new THREE.CatmullRomCurve3( interLayersPoints[i], true );
-            const points = curve.getPoints( 50 );
+            console.log('curve ' + i + ' generated', curve)
+            let points = curve.getPoints( 50 );
             const geometry = new THREE.BufferGeometry().setFromPoints( points );
             const material = new THREE.LineBasicMaterial( { color : this.color } );
             const line = new THREE.Line( geometry, material );
@@ -217,7 +233,7 @@ export default class Printmodel
         
     }
     
-    clear() {
+    clearPrintPath() {
         /*
         Clear the canvas.
         */

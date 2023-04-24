@@ -13,6 +13,7 @@ export default class Inspectwindow
 
         this.setWindow()
     }
+    
     setadditionalwindow(){
         if (this.experience.world.zboard != undefined){
             this.printParams.add(this.experience.world.zboard.mesh, 'visible')
@@ -45,6 +46,7 @@ export default class Inspectwindow
         this.printParams = this.ui.addFolder('DrawingSettings')
         this.printParams.add(this.experience.camera.controls, 'enabled')
                         .name("view")
+        this.printParams.add(this.experience.world.printmodel, 'clear').name("Clear")
     }
 
 
