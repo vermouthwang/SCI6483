@@ -55,7 +55,6 @@ export default class Line
             this.material = new THREE.LineBasicMaterial( { color: 0xff0000 } );
             this.curveObject = new THREE.Line( this.geometry, this.material );
             this.scene.add(this.curveObject)
-            
             this.createSection()
         }
     }
@@ -64,8 +63,7 @@ export default class Line
     {
         this.section = new Section(this.section_point)
         this.section.close_bool = this.close_bool
-        console.log(this.section)
-        
+        console.log(this.section) 
     }
 
     update()
