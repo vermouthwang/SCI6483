@@ -31,16 +31,18 @@ export default class Printmodel
         this.color = 'orange'
     }
 
-    addLine(line){
-       this.sections.push(line)
+    addSection(section){
+        console.log(section)
+       this.sections.push(section)
        if (this.sections.length == 1) {
-            first_layer = this.generateFirstLayer(this.sections[0], this.layerHeight)
+            //console.log(this.sections)
+            first_layer = this.generateFirstLayer(this.sections[0])
             this.display(first_layer, single_layer = true)
        }
        else {
         const last_section = this.sections[this.sections.length - 1]
         const second_last_section = this.sections[this.sections.length - 2]
-        const smoothInterpolation = null
+        const smoothInterpolation = undefined
         // first two layers can only be linearly interpolated
         if (this.sections.length == 2) { smoothInterpolation = false } 
         else { smoothInterpolation = this.smoothInterpolation}
@@ -123,7 +125,7 @@ export default class Printmodel
         return (true, inter_layers_num)
     }
 
-    generateFirstLayer(layer, layerHeight) {
+    generateFirstLayer(layer) {
         /**
          * Generate the first layer.
          * args:
