@@ -1,8 +1,8 @@
 import * as THREE from 'three'
 import Experience from './Experience.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-// import World from './World/World.js'
-import Zboard from './World/Zboard.js'
+
+
 
 export default class Drawing
 {
@@ -15,6 +15,7 @@ export default class Drawing
         this.debug = this.experience.debug
         this.camera = this.experience.camera
         this.zboard = this.experience.world.zboard
+        this.yboard = this.experience.world.yboard
         
         
 
@@ -62,6 +63,11 @@ export default class Drawing
             this.change = false
     }
 
+    // changeboard()
+    // {
+
+    // }
+
     setRaycaster()
     {
         this.raycaster = new THREE.Raycaster()
@@ -71,22 +77,23 @@ export default class Drawing
 
     checkintersection()
     {
-
         this.raycaster.setFromCamera(this.mouse,this.camera.instance)
-        this.intersects = this.raycaster.intersectObject(this.zboard.mesh)
-  
+        if (this.zboard.mesh.visible == true){
+            this.intersects = this.raycaster.intersectObject(this.zboard.mesh)}
+        else{
+            this.intersects = this.raycaster.intersectObject(this.yboard.mesh)
+        }
+        
         if (this.intersects.length!=0 && this.intersects != undefined){
             this.getpoints = this.intersects[0].point
         }
         else{
             this.getpoints = undefined
         }
-
     }
 
     update()
     {   
-
         this.checkMouseChange()
         if ((this.paint && this.change && this.camera.controls.enabled == false) ||
             (this.paint && this.zboard.onchange && this.camera.controls.enabled == false)
@@ -95,7 +102,5 @@ export default class Drawing
         }
         this.currentx = this.mouse.x
         this.currenty = this.mouse.y
-        
-       
     }
 }
