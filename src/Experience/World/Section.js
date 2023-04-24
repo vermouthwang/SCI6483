@@ -5,7 +5,7 @@ export default class Section
 {
     constructor(line)
     {
-        this.closed_bool
+        this.closed = false
         this.points = line
         this.segmentation(line)
         

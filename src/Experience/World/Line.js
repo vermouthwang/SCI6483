@@ -25,7 +25,6 @@ export default class Line
                 this.experience.world.point.pointline = []
             }
             this.setGeometry()
-            this.experience.world.printmodel.addSection(this.section)
         })
     }
 
@@ -63,8 +62,9 @@ export default class Line
     createSection()
     {
         this.section = new Section(this.section_point)
-        this.section.close_bool = this.close_bool
-        //console.log(this.section) 
+        this.section.closed = this.close_bool
+        console.log(this.section) 
+        this.experience.world.printmodel.addSection(this.section)        
     }
 
     update()
