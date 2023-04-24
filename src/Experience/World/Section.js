@@ -8,7 +8,6 @@ export default class Section
         this.closed_bool
         this.points = line
         this.segmentation = this.segmentation(line)
-        
     }
     segmentation(line)
     {
@@ -23,6 +22,5 @@ export default class Section
     }
     update()
     {
-
     }
 }

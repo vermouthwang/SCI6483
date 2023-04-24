@@ -11,34 +11,16 @@ export default class Floor
         this.resources = this.experience.resources
 
         this.setGeometry()
-        this.setTextures()
         this.setMaterial()
         this.setMesh()
         this.update()
-        
     }
 
     setGeometry()
     {
         this.geometry = new THREE.PlaneGeometry(10, 10,10,10)
         this.geometry2 = new THREE.PlaneGeometry(10, 10,10,10)
-  
-    }
 
-    setTextures()
-    {
-        // this.textures = {}
-
-        // this.textures.color = this.resources.items.grassColorTexture
-        // this.textures.color.encoding = THREE.sRGBEncoding
-        // this.textures.color.repeat.set(1.5, 1.5)
-        // this.textures.color.wrapS = THREE.RepeatWrapping
-        // this.textures.color.wrapT = THREE.RepeatWrapping
-
-        // this.textures.normal = this.resources.items.grassNormalTexture
-        // this.textures.normal.repeat.set(1.5, 1.5)
-        // this.textures.normal.wrapS = THREE.RepeatWrapping
-        // this.textures.normal.wrapT = THREE.RepeatWrapping
     }
 
     setMaterial()
@@ -57,7 +39,6 @@ export default class Floor
             opacity: 0.5,
             wireframeLinewidth: 2
         })
-        // this.material.opacity = 0.5
     }
 
     setMesh()

@@ -11,12 +11,10 @@ export default class Zboard
         this.resources = this.experience.resources
 
         this.setGeometry()
-        this.setTextures()
         this.setMaterial()
         this.setMesh()
         this.update()
         this.onchange = false
- 
 
         window.addEventListener('keypress', (event) =>
         {
@@ -37,29 +35,11 @@ export default class Zboard
                 this.onchange=false
             }
         })
-        
     }
 
     setGeometry()
     {
         this.geometry = new THREE.PlaneGeometry(10, 10,10,10)
-
-  
-    }
-    setTextures()
-    {
-        this.textures = {}
-
-        this.textures.color = this.resources.items.grassColorTexture
-        this.textures.color.encoding = THREE.sRGBEncoding
-        this.textures.color.repeat.set(1.5, 1.5)
-        this.textures.color.wrapS = THREE.RepeatWrapping
-        this.textures.color.wrapT = THREE.RepeatWrapping
-
-        this.textures.normal = this.resources.items.grassNormalTexture
-        this.textures.normal.repeat.set(1.5, 1.5)
-        this.textures.normal.wrapS = THREE.RepeatWrapping
-        this.textures.normal.wrapT = THREE.RepeatWrapping
     }
 
     setMaterial()
@@ -70,7 +50,6 @@ export default class Zboard
             opacity:0.2,
             color: new THREE.Color('#887020')
         })
-
     }
 
     setMesh()
@@ -81,10 +60,8 @@ export default class Zboard
         this.mesh.position.y = 5
         this.mesh.visible = true
 
-        // this.mesh.rotation.x = - Math.PI * 0.5
         this.mesh.receiveShadow = true
         this.scene.add(this.mesh)
-    
     }
 
     forward()
@@ -98,5 +75,4 @@ export default class Zboard
     update()
     {   
     }
-    
 }

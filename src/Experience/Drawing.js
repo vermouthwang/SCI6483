@@ -17,8 +17,6 @@ export default class Drawing
         this.zboard = this.experience.world.zboard
         this.yboard = this.experience.world.yboard
         
-        
-
         this.paint = false
         this.mousemove = false
         this.change = false
@@ -63,16 +61,9 @@ export default class Drawing
             this.change = false
     }
 
-    // changeboard()
-    // {
-
-    // }
-
     setRaycaster()
     {
         this.raycaster = new THREE.Raycaster()
-
-        // this.scene.add(this.instance)
     }
 
     checkintersection()

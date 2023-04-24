@@ -39,7 +39,6 @@ export default class Point
                 this.destroy()
             }
         })
-        
         this.setGeometry()
     }
 
