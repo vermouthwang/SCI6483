@@ -32,7 +32,9 @@ export default class Printmodel
     }
 
     addLine(line, smoothInterpolation = true){
+        console.log(line)
        this.sections.push(line)
+       console.log(this.sections)
        if (this.sections.length == 1) {
             first_layer = this.generateFirstLayer(this.sections[0], this.layerHeight)
             this.display(first_layer, single_layer = true)
