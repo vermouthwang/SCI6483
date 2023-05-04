@@ -48,14 +48,14 @@ export default class Camera
             var name = event.key
             if (name === 't'){ 
                 this.camera_change = false
-                this.controls.object.position.set(0, 9, 19.5)
+                this.controls.object.position.set(0, 13, 32)
             }
         })
     }
 
     setInstance()
     {
-        this.instance = new THREE.PerspectiveCamera(35, this.sizes.width / this.sizes.height, 0.1, 100)
+        this.instance = new THREE.PerspectiveCamera(45, this.sizes.width / this.sizes.height, 0.1, 100)
         this.instance.position.set(0,0,12)
         // TODO #1
 
@@ -74,10 +74,10 @@ export default class Camera
         this.controls.enableDamping = true
         this.controls.enabled = false
         if (this.camera_change != true){
-        this.controls.object.position.set(0, 9, 19.5);}
+        this.controls.object.position.set(0, 13, 32);}
         else{
             this.controls.object.position.set(0, 20, 19.5);}
-        this.controls.target = new THREE.Vector3(0, 3.8, 0);
+        this.controls.target = new THREE.Vector3(0, 5, 0);
 
         if(this.debug.active)
         {

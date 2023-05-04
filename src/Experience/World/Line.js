@@ -75,7 +75,7 @@ export default class Line
     {
         this.section = new Section(this.section_point)
         this.section.close_bool = this.close_bool
-        this.experience.world.printmodel.addLine(this.section)
+        this.experience.world.printmodel.addSection(this.section)
         console.log(this.section)
         // this.experience.world.printmodel.atttributelinestorage.push(this.section)
     }

@@ -10,7 +10,7 @@ export default class Zboard
         this.scene = this.experience.scene
         this.resources = this.experience.resources
         this.size = this.experience.world.floor.size
-
+        this.unit = this.experience.world.floor.unit
         this.setGeometry()
         this.setMaterial()
         this.setMesh()
@@ -44,7 +44,7 @@ export default class Zboard
 
     setGeometry()
     {
-        this.geometry = new THREE.PlaneGeometry(this.size[0], this.size[1],10,10)
+        this.geometry = new THREE.PlaneGeometry(this.size[0]/this.unit, this.size[1]/this.unit,10,10)
     }
 
     setMaterial()
@@ -61,8 +61,8 @@ export default class Zboard
     {
         this.mesh = new THREE.Mesh(this.geometry, this.material)
         this.mesh.position.x = 0
-        this.mesh.position.z = -5
-        this.mesh.position.y = 5
+        this.mesh.position.z = -0.5*this.size[1]/this.unit
+        this.mesh.position.y = 0.5*this.size[1]/this.unit
         this.mesh.visible = true
 
         this.mesh.receiveShadow = true
@@ -71,11 +71,11 @@ export default class Zboard
 
     forward()
     {
-        this.mesh.position.z -= 0.08
+        this.mesh.position.z -= 0.15
     }
     backward()
     {
-        this.mesh.position.z += 0.08
+        this.mesh.position.z += 0.15
     }
     update()
     {   
