@@ -14,7 +14,7 @@ export default class Printmodel
         this.printerType = "FDM"
         this.printer = "Prusa MKS3"
         this.limit = printers[this.printer]
-        this.unit = {'mm': 1, 'cm': 0.1, 'm': 0.001}
+        this.unit = {'mm': 10, 'cm': 1, 'm': 0.01}
         this.material = 'PLA'
         this.layerHeight = 1.0
         this.printSpeed = {
