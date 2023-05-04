@@ -40,7 +40,7 @@ export default class Camera
             console.log("t")
             var name = event.key
             if (name === 't'){ 
-                this.controls.object.position.set(0, 25, 1)
+                this.controls.object.position.set(0, 35, 1)
             }
         })
         window.addEventListener('keyup', (event) =>
@@ -68,16 +68,15 @@ export default class Camera
 
     setControls()
     {
-
         this.controls = new OrbitControls(this.instance, this.canvas)
 
         this.controls.enableDamping = true
         this.controls.enabled = false
         if (this.camera_change != true){
-        this.controls.object.position.set(0, 13, 32);}
+        this.controls.object.position.set(0, 15, 32);}
         else{
             this.controls.object.position.set(0, 20, 19.5);}
-        this.controls.target = new THREE.Vector3(0, 5, 0);
+        this.controls.target = new THREE.Vector3(0, 8, 0);
 
         if(this.debug.active)
         {

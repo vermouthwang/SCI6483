@@ -2,6 +2,7 @@ import * as THREE from 'three'
 import Experience from '../Experience.js'
 import printers from '../printers.js'
 // import EventEmitter from '/Users/macbook/Desktop/website/finalproject/SCI6483/src/Experience/Utils/EventEmitter.js'
+import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 
 export default class Floor
 {
@@ -21,9 +22,11 @@ export default class Floor
 
     setGeometry()
     {
-        console.log("whatever")
         this.geometry = new THREE.PlaneGeometry(this.size[0]/this.unit, this.size[1]/this.unit,10,10)
         this.geometry2 = new THREE.PlaneGeometry(this.size[0]/this.unit, this.size[1]/this.unit,10,10)
+        this.geometry3 = new THREE.PlaneGeometry(this.size[0]/this.unit, this.size[1]/this.unit,1,1)
+        this.geometry4 = new THREE.PlaneGeometry(this.size[0]/this.unit, this.size[1]/this.unit,1,1)
+        this.geometry5 = new THREE.PlaneGeometry(this.size[0]/this.unit, this.size[1]/this.unit,1,1)
     }
     
     setMaterial()
@@ -47,13 +50,34 @@ export default class Floor
     setMesh()
     {
         this.mesh = new THREE.Mesh(this.geometry, this.material)
-        this.mesh2 = new THREE.Mesh(this.geometry2, this.material2)
         this.mesh.position.y = 0.01
         this.mesh.rotation.x = - Math.PI * 0.5
+        this.mesh2 = new THREE.Mesh(this.geometry2, this.material2)
         this.mesh2.rotation.x = - Math.PI * 0.5
         this.mesh2.receiveShadow = true
+
+        this.mesh3 =  new THREE.Mesh(this.geometry3, this.material)
+        this.mesh4 =  new THREE.Mesh(this.geometry4, this.material)
+        this.mesh5 =  new THREE.Mesh(this.geometry5, this.material)
+
+        
+        this.mesh3.rotation.y = - Math.PI * 0.5
+        this.mesh5.rotation.y = - Math.PI * 0.5
+
+        this.mesh5.position.y = this.size[1]/this.unit/2
+        this.mesh5.position.x = -this.size[0]/this.unit/2
+        
+        this.mesh3.position.x = this.size[0]/this.unit/2
+        this.mesh3.position.y = this.size[1]/this.unit/2
+
+        this.mesh4.position.z = -this.size[0]/this.unit/2
+        this.mesh4.position.y = this.size[1]/this.unit/2
+
         this.scene.add(this.mesh)
         this.scene.add(this.mesh2)
+        this.scene.add(this.mesh3)
+        this.scene.add(this.mesh4)
+        this.scene.add(this.mesh5)
     }
 
     update()
