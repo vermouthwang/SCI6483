@@ -36,8 +36,6 @@ export default class Inspectwindow
                         .step(0.1)
         this.printParams.add(this.experience.world.printmodel, 'smoothInterpolation', ['True', 'False'])
                         .name('Smooth Interpolation')
-        this.printParams.add(this.experience.world.printmodel, 'exportGcode')
-                        .name('Export Gcode')
         // display settings
         this.displayParams = this.ui.addFolder('DisplaySettings')
         this.displayParams.add(this.experience.world.printmodel, 'color', ['orange', 'blue', 'green', 'red'])
@@ -47,7 +45,8 @@ export default class Inspectwindow
         this.printParams.add(this.experience.camera.controls, 'enabled')
                         .name("view")
         this.printParams.add(this.experience.world.printmodel, 'clear').name("Clear")
+        // export parameters
+        this.exportParams = this.ui.addFolder('ExportSettings')
+        this.exportParams.add(this.experience.world.printmodel, 'exportGcode').name("Export Gcode")
     }
-
-
 }
