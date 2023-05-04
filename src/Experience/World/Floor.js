@@ -12,6 +12,7 @@ export default class Floor
         this.resources = this.experience.resources
         this.machine = this.experience.world.printmodel.limit
         this.size = [this.machine["machine_width"], this.machine["machine_depth"], this.machine["machine_height"]]
+        this.unit = this.experience.world.printmodel.unit["mm"]
         this.setGeometry()
         this.setMaterial()
         this.setMesh()
@@ -21,8 +22,8 @@ export default class Floor
     setGeometry()
     {
         console.log("whatever")
-        this.geometry = new THREE.PlaneGeometry(this.size[0], this.size[1],10,10)
-        this.geometry2 = new THREE.PlaneGeometry(this.size[0], this.size[1],10,10)
+        this.geometry = new THREE.PlaneGeometry(this.size[0]/this.unit, this.size[1]/this.unit,10,10)
+        this.geometry2 = new THREE.PlaneGeometry(this.size[0]/this.unit, this.size[1]/this.unit,10,10)
     }
     
     setMaterial()

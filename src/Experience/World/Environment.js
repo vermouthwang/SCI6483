@@ -87,7 +87,7 @@ export default class Environment
         }
         this.environmentMap.updateMaterials()
         this.fog = new THREE.Fog('#262820', 1, 80)
-	    this.scene.fog = this.fog	
+	    // this.scene.fog = this.fog	
 
         // Debug
         if(this.debug.active)

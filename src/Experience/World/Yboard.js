@@ -9,6 +9,7 @@ export default class Yboard
         this.scene = this.experience.scene
         this.resources = this.experience.resources
         this.size = this.experience.world.floor.size
+        this.unit = this.experience.world.floor.unit
         this.setGeometry()
         this.setMaterial()
         this.setMesh()
@@ -39,7 +40,7 @@ export default class Yboard
 
     setGeometry()
     {
-        this.geometry = new THREE.PlaneGeometry(this.size[0], this.size[1],10,10)
+        this.geometry = new THREE.PlaneGeometry(this.size[0]/this.unit, this.size[1]/this.unit,10,10)
     }
 
     setMaterial()
@@ -64,12 +65,12 @@ export default class Yboard
 
     upward()
     {
-        this.mesh.position.y += 0.08
+        this.mesh.position.y += 0.12
     }
 
     downward()
     {
-        this.mesh.position.y -= 0.08
+        this.mesh.position.y -= 0.12
     }
 
     update()
