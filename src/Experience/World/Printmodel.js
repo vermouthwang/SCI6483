@@ -14,7 +14,7 @@ export default class Printmodel
         this.printerType = "FDM"
         this.printer = "Prusa MKS3"
         this.limit = printers[this.printer]
-        this.unit = {'mm': 10, 'cm': 1, 'm': 0.01}
+        this.unit = {'mm': 1, 'cm': 0.1, 'm': 0.001}
         this.material = 'PLA'
         this.layerHeight = 1.0
         this.printSpeed = {
@@ -23,16 +23,29 @@ export default class Printmodel
         }
         this.maxSlope = printers[this.printer]["machine_max_z_slope"] + 10
         this.smoothInterpolation = false
-        this.exportGcode = () => {
-            exportPrtintPath(this.printpath)
-        }
+        
         // atributtes
         this.sections = []
         this.printpath = []
         this.color = 'orange'
+        this.gcode = []
+        
+        // utils
         this.clear = () => {
             this.clearPrintPath()
+            this.clearSection()
+            this.clearGcode()
         }
+        this.exportGcode = () => {
+            if(this.sections.length == 0) {
+                console.log("No model to export.")
+            }else{
+                if (this.gcode.length == 0) {
+                    this.generateGcode()
+                }
+                this.exportGcodeFile()                
+        }}
+            
     }
 
     addSection(section){
@@ -215,7 +228,44 @@ export default class Printmodel
         }
         return new_layers
     }
+
+    generateGcode() {
+        /*
+        Generate the gcode for the printpath.
+        */
+        const gcode_body = []
+        this.printpath.forEach(layer => {
+            const points = layer.geometry.attributes.position.array;
+            console.log(points)
+            let cur_point = null
+            let prev_point = null
+            for (let index = 0; index < points.length; index++) {
+                
+                if (index % 3 === 0) {
+                    const x = (points[index] * this.unit['mm']).toFixed(3)
+                    const y = (points[index + 2] * this.unit['mm']).toFixed(3)
+                    const z = (points[index + 1] * this.unit['mm']).toFixed(3)
+                    if (cur_point === null) {
+                        cur_point = [x, y, z]
+                    }else{
+                        prev_point = cur_point
+                        cur_point = [x, y, z]
+                    }
+                    if (prev_point !== null) {
+                        const distance = this.unit['mm'] * Math.sqrt(Math.pow((cur_point[0] - prev_point[0]),2) + 
+                                                    Math.pow((cur_point[1] - prev_point[1]),2) + 
+                                                    Math.pow((cur_point[2] - prev_point[2]),2));
+                        const extrusion = distance / this.limit["extrusion_width"] * this.limit["extrusion_multiplier"]                              
+                        gcode_body.push(`G1 X${x} Y${y} Z${z} E${extrusion}\n`)
+                    }
+                }
+            }
+        }); 
+        this.gcode = this.limit["machine_start_gcode"].concat(gcode_body, this.limit["machine_end_gcode"])
+        console.log(this.gcode)
+    }
     
+    // UTILS
     display(layers, single_layer = false) {
         /*
         Display the layers array.
@@ -243,10 +293,41 @@ export default class Printmodel
         this.printpath = [];
     }
 
-    exportPrtintPath(printpath){
-        // export the printpath to gcode
-        // TODO
-        console.log("printpath exported")
+    clearSection() {
+        /*
+        Clear the canvas.
+        */
+        
+    }
+
+    clearGcode() {
+        /*
+        Clear the canvas.
+        */
+        this.gcode.forEach(layer => {
+            this.experience.scene.remove(layer);
+        });
+        this.gcode = [];
+    }
+
+    exportGcodeFile(){
+        /* 
+        Export the printpath to gcode
+        */
+        const gcode = this.gcode.join('')
+        const blob = new Blob([gcode], {type: "text/plain;charset=utf-8"});
+        // create a temporary url for the blob
+        const url = window.URL.createObjectURL(blob);
+        // create a temporary anchor element
+        const link = document.createElement("a");
+        // set the anchor's href to the url
+        link.href = url;
+        link.download = "print.gcode";
+        // click the anchor to trigger the download
+        link.click();
+        // remove the anchor from the DOM
+        link.remove();
+        // remove the temporary URL from the window
+        window.URL.revokeObjectURL(url);
     }
 }
-
