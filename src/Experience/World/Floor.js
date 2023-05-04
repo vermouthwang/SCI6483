@@ -20,10 +20,11 @@ export default class Floor
 
     setGeometry()
     {
+        console.log("whatever")
         this.geometry = new THREE.PlaneGeometry(this.size[0], this.size[1],10,10)
         this.geometry2 = new THREE.PlaneGeometry(this.size[0], this.size[1],10,10)
     }
-
+    
     setMaterial()
     {
         this.material = new THREE.MeshBasicMaterial({
