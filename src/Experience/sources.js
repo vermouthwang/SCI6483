@@ -23,8 +23,14 @@ export default [
         path: 'textures/dirt/normal.jpg'
     },
     {
+        name: 'fonts',
+        type: 'font',
+        path: 'fonts/helvetiker_regular.typeface.json'
+    },
+    {
         name: 'foxModel',
         type: 'gltfModel',
         path: 'models/Fox/glTF/Fox.gltf'
-    }
+    },
+
 ]

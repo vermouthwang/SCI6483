@@ -40,6 +40,14 @@ export default class Zboard
                 this.onchange=false
             }
         })
+        window.addEventListener('keypress',(event) =>
+        {    
+            var name = event.key
+            if (name === 'Enter'){ 
+                this.mesh.material.color.r = 0.53
+                this.mesh.material.color.g =0.44
+            }
+        })   
     }
 
     setGeometry()
@@ -72,10 +80,18 @@ export default class Zboard
     forward()
     {
         this.mesh.position.z -= 0.15
+        this.mesh.material.color.r -= 0.03
+        this.mesh.material.color.g += 0.03
+        this.mesh.material.opacity -= 0.001
+
     }
     backward()
     {
         this.mesh.position.z += 0.15
+        this.mesh.material.color.r += 0.03
+        this.mesh.material.color.g -= 0.03
+        this.mesh.material.opacity += 0.001
+
     }
     update()
     {   

@@ -8,6 +8,7 @@ import Point from './Point.js'
 import Line from './Line.js'
 import Printmodel from './Printmodel.js'
 import Drawing from '../Drawing.js'
+import Text from './Text.js'
 
 export default class World
 {
@@ -27,6 +28,7 @@ export default class World
             this.zboard = new Zboard()
             this.yboard = new Yboard()
             this.fox = new Fox()
+            this.text = new Text()
             this.environment = new Environment()
             this.drawing = new Drawing()
             this.point = new Point()
