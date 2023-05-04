@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import Experience from '../Experience.js'
 import printers from '../printers.js'
+import Simplification from './simplify_test.js'
 
 export default class Printmodel
 {
@@ -12,7 +13,7 @@ export default class Printmodel
         
         // settings
         this.printerType = "FDM"
-        this.printer = "Prusa MKS3"
+        this.printer = "Prusa MK3S"
         this.limit = printers[this.printer]
         this.unit = {'mm': 10, 'cm': 1, 'm': 0.01}
         this.material = 'PLA'
@@ -68,7 +69,7 @@ export default class Printmodel
             if (is_interpolatable) {
                 let inter_layers = this.generateInterLayers(last_section, second_last_section, layersNum, smoothInterpolation)
                 this.display(inter_layers, false)
-                console.log(inter_layers)
+                // console.log(inter_layers)
             }else{
                 console.log("The last two layers can not be interpolated.")
                 this.sections.pop()
@@ -163,7 +164,7 @@ export default class Printmodel
          * */
         const firstLayerPoints = [];
         layer.points.forEach(point => {
-            const newPoint = new THREE.Vector3(point.x, this.limit["min_layer_height"]/this.unit['mm'], point.z);
+            const newPoint = new THREE.Vector3(point.x, 0.4/this.unit['mm'], point.z);
             firstLayerPoints.push(newPoint);
         })
         const geometry = new THREE.BufferGeometry().setFromPoints(firstLayerPoints);
@@ -173,7 +174,7 @@ export default class Printmodel
         return firstLayer;
     }
 
-    generateInterLayers(layer1, layer2, interLayersNum, smoothInterpolation) {
+    generateInterLayers(layer1, layer2, interLayersNum, smoothInterpolation, resolution = 100) {
         /**
          * Interpolate between the last two layers.
          * args: 
@@ -191,13 +192,17 @@ export default class Printmodel
             
         } else {
             // linear interpolation
-            for (let i = 0; i < layer1.points.length; i++) {
-                const lastPoint = layer1.points[i];
-                const secondLastPoint = layer2.points[i];
+            const lastCurve = new THREE.CatmullRomCurve3(layer1.points);
+            const secondLastCurve = new THREE.CatmullRomCurve3(layer2.points);
+            const lastCrvPoints = lastCurve.getPoints(resolution);
+            const secondLastCrvPoints = secondLastCurve.getPoints(resolution);
+            for (let i = 0; i < resolution; i++) {
+                const lastPoint = lastCrvPoints[i];
+                const secondLastPoint = secondLastCrvPoints[i];
                 const points = [];
                 points.push(lastPoint);
                 points.push(secondLastPoint);
-                const verticalLine = new THREE.LineCurve3(lastPoint, secondLastPoint);
+                const verticalLine = new THREE.LineCurve3(secondLastPoint,lastPoint);
                 // VISUALIZE THE LINE
                 // const geometry = new THREE.BufferGeometry().setFromPoints( points );
                 // const material = new THREE.LineBasicMaterial( { color : 0x0000ff } );
@@ -217,8 +222,9 @@ export default class Printmodel
         const new_layers = []
         for (let i = 0; i < interLayersNum; i++) {
             const curve = new THREE.CatmullRomCurve3( interLayersPoints[i], true );
-            console.log('curve ' + i + ' generated', curve)
-            let points = curve.getPoints( 50 );
+            // console.log('curve ' + i + ' generated', curve)
+            let points = curve.getPoints( resolution );
+            // const simplified_points = new Simplification(points).simplified_line
             const geometry = new THREE.BufferGeometry().setFromPoints( points );
             const material = new THREE.LineBasicMaterial( { color : this.color } );
             const line = new THREE.Line( geometry, material );
@@ -236,14 +242,14 @@ export default class Printmodel
         const gcode_body = []
         this.printpath.forEach(layer => {
             const points = layer.geometry.attributes.position.array;
-            console.log(points)
+            // console.log(points)
             let cur_point = null
             let prev_point = null
             for (let index = 0; index < points.length; index++) {
                 
                 if (index % 3 === 0) {
-                    const x = (points[index] * this.unit['mm']).toFixed(3)
-                    const y = (points[index + 2] * this.unit['mm']).toFixed(3)
+                    const x = -(points[index] * this.unit['mm']).toFixed(3) + this.limit['machine_width']/2
+                    const y = -(points[index + 2] * this.unit['mm']).toFixed(3) + this.limit['machine_depth']/2
                     const z = (points[index + 1] * this.unit['mm']).toFixed(3)
                     if (cur_point === null) {
                         cur_point = [x, y, z]
@@ -255,14 +261,14 @@ export default class Printmodel
                         const distance = this.unit['mm'] * Math.sqrt(Math.pow((cur_point[0] - prev_point[0]),2) + 
                                                     Math.pow((cur_point[1] - prev_point[1]),2) + 
                                                     Math.pow((cur_point[2] - prev_point[2]),2));
-                        const extrusion = distance / this.limit["extrusion_width"] * this.limit["extrusion_multiplier"]                              
+                        const extrusion = (distance / this.limit["extrusion_multiplier"]).toFixed(3)                            
                         gcode_body.push(`G1 X${x} Y${y} Z${z} E${extrusion}\n`)
                     }
                 }
             }
         }); 
         this.gcode = this.limit["machine_start_gcode"].concat(gcode_body, this.limit["machine_end_gcode"])
-        console.log(this.gcode)
+        // console.log(this.gcode)
     }
     
     // UTILS

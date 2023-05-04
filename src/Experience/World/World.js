@@ -26,7 +26,7 @@ export default class World
             this.floor = new Floor()
             this.zboard = new Zboard()
             this.yboard = new Yboard()
-            this.fox = new Fox()
+            // this.fox = new Fox()
             this.environment = new Environment()
             this.drawing = new Drawing()
             this.point = new Point()
@@ -38,10 +38,10 @@ export default class World
 
     update()
     {
-        if(this.fox){
-            this.fox.update()
-            // this.drawing.update()
-        }
+        // if(this.fox){
+        //     this.fox.update()
+        //     // this.drawing.update()
+        // }
         if (this.drawing){
             this.drawing.update()
         }

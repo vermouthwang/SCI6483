@@ -3,20 +3,20 @@ import Experience from '../Experience.js'
 
 export default class Section
 {
-    constructor(line)
+    constructor(sectionPoints)
     {
         this.closed = false
-        this.points = line
-        this.segmentation(line)
+        this.points = sectionPoints
+        this.segmentation(sectionPoints)
         
     }
 
-    segmentation(line)
+    segmentation(points)
     {
         this.segments = []
-        for(let i=0; i<line.length; i+=2){
-            this.start = line[i]
-            this.end = line[i+1]
+        for(let i=0; i<points.length; i+=2){
+            this.start = points[i]
+            this.end = points[i+1]
             this.line3 = new THREE.Line3(this.start,this.end)
             this.segments.push(this.line3)
         }

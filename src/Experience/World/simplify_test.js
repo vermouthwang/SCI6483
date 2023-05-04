@@ -137,7 +137,7 @@ export default class Simplification
         
             return newPoints;
         }
-        return simplifyDouglasPeucker(this.line, 0.00000001)
+        return simplifyDouglasPeucker(this.line, 0.000001)
         // // both algorithms combined for awesome performance
         // function simplify(points, tolerance, highestQuality) {
         
