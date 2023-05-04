@@ -15,9 +15,9 @@ export default class Inspectwindow
     }
     
     setadditionalwindow(){
-        if (this.experience.world.zboard != undefined){
-            this.printParams.add(this.experience.world.zboard.mesh, 'visible')
-                            .name("Zboard-Yboard")}
+        // if (this.experience.world.zboard != undefined){
+        //     this.printParams.add(this.experience.world.zboard.mesh, 'visible')
+        //                     .name("Zboard-Yboard")}
         }
 
     setWindow(){

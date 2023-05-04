@@ -8,11 +8,13 @@ export default class Yboard
         this.experience = new Experience()
         this.scene = this.experience.scene
         this.resources = this.experience.resources
+        this.size = this.experience.world.floor.size
         this.setGeometry()
         this.setMaterial()
         this.setMesh()
         this.update()
         this.onchange = false
+    
  
         window.addEventListener('keypress', (event) =>
         {
@@ -37,7 +39,7 @@ export default class Yboard
 
     setGeometry()
     {
-        this.geometry = new THREE.PlaneGeometry(10, 10,10,10)
+        this.geometry = new THREE.PlaneGeometry(this.size[0], this.size[1],10,10)
     }
 
     setMaterial()

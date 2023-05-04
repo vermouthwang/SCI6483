@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import Experience from '../Experience.js'
+import Simplification from './simplify_test.js'
 
 export default class Point
 {
@@ -14,7 +15,7 @@ export default class Point
         this.debug = this.experience.debug
         this.camera = this.experience.camera
         this.getpoints = this.experience.world.drawing.getpoints
-        
+
         this.pointline = []
         this.returnpoint_bool = false
         
@@ -41,6 +42,7 @@ export default class Point
         })
         this.setGeometry()
     }
+
 
     setGeometry()
     {

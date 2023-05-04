@@ -9,6 +9,7 @@ export default class Zboard
         this.experience = new Experience()
         this.scene = this.experience.scene
         this.resources = this.experience.resources
+        this.size = this.experience.world.floor.size
 
         this.setGeometry()
         this.setMaterial()
@@ -27,6 +28,10 @@ export default class Zboard
                 this.forward()
                 this.onchange=true
             }
+            if (name === 'z'){
+                this.mesh.visible = !this.mesh.visible
+            }
+            
         })
         window.addEventListener('keyup',(event) =>
         {    
@@ -39,7 +44,7 @@ export default class Zboard
 
     setGeometry()
     {
-        this.geometry = new THREE.PlaneGeometry(10, 10,10,10)
+        this.geometry = new THREE.PlaneGeometry(this.size[0], this.size[1],10,10)
     }
 
     setMaterial()

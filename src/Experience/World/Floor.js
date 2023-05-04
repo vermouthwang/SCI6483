@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import Experience from '../Experience.js'
+import printers from '../printers.js'
 // import EventEmitter from '/Users/macbook/Desktop/website/finalproject/SCI6483/src/Experience/Utils/EventEmitter.js'
 
 export default class Floor
@@ -9,7 +10,8 @@ export default class Floor
         this.experience = new Experience()
         this.scene = this.experience.scene
         this.resources = this.experience.resources
-
+        this.machine = this.experience.world.printmodel.limit
+        this.size = [this.machine["machine_width"], this.machine["machine_depth"], this.machine["machine_height"]]
         this.setGeometry()
         this.setMaterial()
         this.setMesh()
@@ -18,9 +20,8 @@ export default class Floor
 
     setGeometry()
     {
-        this.geometry = new THREE.PlaneGeometry(10, 10,10,10)
-        this.geometry2 = new THREE.PlaneGeometry(10, 10,10,10)
-
+        this.geometry = new THREE.PlaneGeometry(this.size[0], this.size[1],10,10)
+        this.geometry2 = new THREE.PlaneGeometry(this.size[0], this.size[1],10,10)
     }
 
     setMaterial()
