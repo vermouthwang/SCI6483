@@ -84,8 +84,7 @@ export default class Fox
     }
 
     update()
-    {   
-    
+    {
         this.animation.mixer.update(this.time.delta * 0.001)
     }
 }
